@@ -1,0 +1,9 @@
+/.envrc
+/.direnv
+/.cache
+
+/compile_commands.json
+/bin
+/lib
+/out
+
