@@ -54,5 +54,6 @@ char *read_file(char *path, error_t *error) {
                        amount_read);
   }
 
+  buffer[size - 1] = '\0';
   return buffer;
 }

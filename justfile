@@ -35,6 +35,10 @@ lib_dir := 'lib'
     just compile {{ day }}
     just link {{ day }}
 
+@build_current_day:
+    # find current day
+    just build $(ls -d src/* | cut -c 5- | grep -E '\b(0[0-9]|1[0-2])\b' | sort -n | tail -1)
+
 @bear:
     bear -- just compile
     sed -i 's|"/nix/store/[^"]*gcc[^"]*|\"gcc|g' compile_commands.json
