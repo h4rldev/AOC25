@@ -15,6 +15,21 @@ inline static char *throw_error(error_t *error_buf, error_t error,
   return NULL;
 }
 
+inline char *clone_input(char **input, error_t *error) {
+  char *buf = NULL;
+  size_t len = 0;
+
+  len = strlen(*input) + 1;
+  buf = (char *)malloc(len);
+  if (!buf)
+    return throw_error(error, ERR_MEM, "Could not allocate memory for buffer");
+
+  strncpy(buf, *input, len);
+  buf[len - 1] = '\0';
+
+  return buf;
+}
+
 char *read_file(char *path, error_t *error) {
   size_t size = 0;
   char *buffer = NULL;

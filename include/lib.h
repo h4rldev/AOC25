@@ -10,5 +10,6 @@ typedef enum {
 } error_t;
 
 char *read_file(char *path, error_t *error);
+char *clone_input(char **input, error_t *error);
 
 #endif
