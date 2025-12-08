@@ -12,18 +12,16 @@ lib_dir := 'lib'
 @compile day="01":
     [[ -d {{ out_dir }} ]] || mkdir -p {{ out_dir }}
     [[ -d {{ out_dir }}/{{ day }} ]] || mkdir -p {{ out_dir }}/{{ day }}
-
-    find {{ src_dir }}/{{ day }} -name "*.c" -exec sh -c 'gcc -c "$1" -I {{ include_dir }} -std=c99 -fsanitize=address -g -o "{{ out_dir }}/{{ day }}/$(basename "${1%.c}").o"' sh {} \;
+    find {{ src_dir }}/{{ day }} -name "*.c" -exec sh -c 'gcc -c "$1" -I {{ include_dir }} -O2 -flto -std=c99 -fsanitize=address -g -o "{{ out_dir }}/{{ day }}/$(basename "${1%.c}").o"' sh {} \;
 
 @link day="01":
     [[ -d {{ bin_dir }} ]] || mkdir -p {{ bin_dir }}
     [[ -f {{ lib_dir }}/lib.a ]] || just build_lib
-
-    gcc {{ out_dir }}/{{ day }}/* -std=c99 -fsanitize=address -static-libasan -lm -L{{ lib_dir }} -l:lib.a -o {{ bin_dir }}/aoc25_{{ day }}
+    gcc {{ out_dir }}/{{ day }}/* -O2 -flto -std=c99 -fsanitize=address -static-libasan -lm -L{{ lib_dir }} -l:lib.a -o {{ bin_dir }}/aoc25_{{ day }}
 
 @compile_lib:
     [[ -d {{ out_dir }}/lib ]] || mkdir -p {{ out_dir }}/lib
-    gcc -c {{ src_dir }}/lib/*.c -I {{ include_dir }} -std=c99 -fsanitize=address -g -o {{ out_dir }}/lib/lib.o
+    gcc -c {{ src_dir }}/lib/*.c -I {{ include_dir }} -O2 -flto -std=c99 -fsanitize=address -g -o {{ out_dir }}/lib/lib.o
 
 @archive_lib:
     [[ -d {{ lib_dir }} ]] || mkdir -p {{ lib_dir }}
